@@ -4,7 +4,7 @@
 }
 <style>
     #profileMenu a:hover {
-        background-color: #0078AE;
+        background-color: darkgray;
     }
 </style>
 <div class="position-relative d-inline-block" id="profileContainer">
@@ -13,11 +13,10 @@
         <span class="navbar-text me-2" id="headerUserName">Guest</span>
     </div>
 
-    <div id="profileMenu" class="shadow rounded bg-dark position-absolute"
-         style="top: 45px; right: 0; min-width: 160px; display: none; z-index: 1050;">
+    <div id="profileMenu" class="shadow rounde position-absolute" style="top: 45px; right: 0; min-width: 160px; display: none; z-index: 1050; background-color:dimgrey;color:black;">
         <a href="/User/EditProfile" class="dropdown-item px-3 py-2">👤 Edit Profile</a>
         <a href="/User/Settings" class="dropdown-item px-3 py-2">⚙️ Account Settings</a>
-        <a class="dropdown-item px-3 py-2 text-danger" id="logoutBtn">🚪 Logout</a>
+        <a class="dropdown-item px-3 py-2" id="logoutBtn">🚪 Logout</a>
     </div>
 </div>
 <!-- Logout Confirmation Modal -->
