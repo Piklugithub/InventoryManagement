@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .navbar-custom {
+            background-color: #0078AE;
+            color: white;
+        }
+        .navbar-brand, .navbar-text {
+            color: white !important;
+        }
+        .app-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        .user-info img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom position-relative px-3">
+        <!-- Left: Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="https://via.placeholder.com/30" alt="Logo" class="me-2">
+        </a>
+
+        <!-- Center: App Name -->
+        <div class="app-name text-center">Inventory Manager</div>
+
+        <!-- Right: User Info -->
+        <div class="ms-auto d-flex align-items-center user-info">
+            @* <img id="headerUserImage" src="~/images/default-user.png" class="rounded-circle me-2" width="32" height="32" alt="Profile" />
+            <span class="navbar-text me-2" id="headerUserName">Guest</span> *@
+            @Html.Partial("_ProfileMenu")
+        </div>
+    </nav>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - StoreAnalysis - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+<script>
+    $(document).ready(function () {
+        $('#profilePicWrapper').click(function (e) {
+            e.stopPropagation();
+            $('#profileMenu').fadeToggle(150);
+        });
+
+        $(document).click(function () {
+            $('#profileMenu').fadeOut(100);
+        });
+
+        $('#profileMenu').click(function (e) {
+            e.stopPropagation();
+        });
+        $('#logoutBtn').click(function () {
+            $('#logoutModal').modal('show');
+        });
+
+        $('#confirmLogout').click(function () {
+            window.location.href = '/User/Login';
+        });
+    });
+</script>
+</html>
