@@ -1,12 +1,12 @@
 ﻿$(document).ready(function () {
-    const userName = sessionStorage.getItem("UserName");
-    const img = sessionStorage.getItem("UserImage");
-    if (userName) {
-        $('#headerUserName').text(userName);
-    }
-    if (img) {
-        $('#headerUserImage').attr('src', `data:image/png;base64,${img}`);
-    }
+    //const userName = sessionStorage.getItem("UserName");
+    //const img = sessionStorage.getItem("UserImage");
+    //if (userName) {
+    //    $('#headerUserName').text(userName);
+    //}
+    //if (img) {
+    //    $('#headerUserImage').attr('src', `data:image/png;base64,${img}`);
+    //}
     loadKPI();
     loadSalesChart();
 });

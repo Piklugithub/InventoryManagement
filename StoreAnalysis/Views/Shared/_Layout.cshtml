@@ -30,7 +30,7 @@
         }
     </style>
 </head>
-<body style="overflow-x: hidden;">
+<body class="d-flex flex-column min-vh-100"  style="overflow-x: hidden;">
         <!-- Prevent horizontal scroll -->
         <!-- Fixed Top Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-3" style="z-index: 1051;">
@@ -63,8 +63,8 @@
         </div>
 
         <!-- Footer -->
-        <footer class="border-top footer text-muted" style="margin-left: 250px;">
-            <div class="container">
+    <footer class="border-top footer text-muted mt-auto d-flex justify-content-center align-items-center text-center py-3" style="margin-left: 250px;" id="footer">
+        <div class="container">
                 &copy; 2025 - StoreAnalysis -
                 <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
@@ -76,6 +76,7 @@
 </body>
 <script>
     $(document).ready(function () {
+
         $('#profilePicWrapper').click(function (e) {
             e.stopPropagation();
             $('#profileMenu').fadeToggle(150);
@@ -98,15 +99,26 @@
         $('#toggleSidebar').on('click', function () {
             const $sidebar = $('#sidebar');
             const $mainContent = $('#mainContent');
+            const $footer = $('#footer');
 
             if ($sidebar.css('margin-left') === '0px') {
                 $sidebar.css('margin-left', '-250px');
                 $mainContent.css('margin-left', '0');
+                $footer.css('margin-left', '0');
             } else {
                 $sidebar.css('margin-left', '0');
                 $mainContent.css('margin-left', '250px');
+                $footer.css('margin-left', '250px');
             }
         });
+        const userName = sessionStorage.getItem("UserName");
+        const img = sessionStorage.getItem("UserImage");
+        if (userName) {
+            $('#headerUserName').text(userName);
+        }
+        if (img) {
+            $('#headerUserImage').attr('src', `data:image/png;base64,${img}`);
+        }
     });
 </script>
 </html>
