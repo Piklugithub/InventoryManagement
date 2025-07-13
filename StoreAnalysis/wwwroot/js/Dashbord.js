@@ -7,50 +7,51 @@
     //if (img) {
     //    $('#headerUserImage').attr('src', `data:image/png;base64,${img}`);
     //}
-    loadKPI();
-    loadSalesChart();
+    loadKpis();
+    loadCharts();
 });
 
-function loadKPI() {
-    $.ajax({
-        url: '/Dashboard/GetKPIData',
-        method: 'GET',
-        success: function (data) {
-            $('#totalSales').text(data.totalSales.toFixed(2));
-            $('#totalOrders').text(data.totalOrders);
-            $('#topStore').text(data.topStore);
-            $('#avgOrderValue').text(data.avgOrderValue.toFixed(2));
-        },
-        error: function () {
-            alert('Failed to load KPI data.');
-        }
+function loadKpis() {
+    $.get('/Dashboard/GetKpiData', function (data) {
+        $('#totalSales').text(data.totalSales);
+        $('#totalProfit').text(data.totalProfit);
+        $('#quantitySold').text(data.totalQuantitySold);
+        $('#inventoryAdded').text(data.newInventoryAdded);
     });
 }
 
-function loadSalesChart() {
-    $.ajax({
-        url: '/Dashboard/GetSalesChartData',
-        method: 'GET',
-        success: function (data) {
-            const labels = data.map(x => x.date);
-            const values = data.map(x => x.total);
+// Function to load and render Chart.js charts
+function loadCharts() {
+    $.get('/Dashboard/GetSalesChartData', function (chartData) {
+        new Chart(document.getElementById('salesChart'), {
+            type: 'bar',
+            data: {
+                labels: chartData.salesLabels,
+                datasets: [{
+                    label: 'Daily Sales (₹)',
+                    data: chartData.salesData,
+                    backgroundColor: '#0d6efd'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
 
-            new Chart($('#salesChart'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Sales Over Time',
-                        data: values,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        fill: false
-                    }]
-                }
-            });
-        },
-        error: function () {
-            alert('Failed to load chart data.');
-        }
+        new Chart(document.getElementById('inventoryChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Sold', 'New Inventory'],
+                datasets: [{
+                    data: [chartData.totalQuantitySold, chartData.newInventoryAdded],
+                    backgroundColor: ['#20c997', '#ffc107']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
     });
 }

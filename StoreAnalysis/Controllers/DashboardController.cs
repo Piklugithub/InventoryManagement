@@ -18,16 +18,14 @@ namespace StoreAnalysis.Controllers
         [HttpGet]
         public IActionResult GetKPIData()
         {
-            var sales = _context.Sales.ToList();
+            var today = DateTime.Today;
 
-            var result = new KPIResult
+            var result = new
             {
-                TotalSales = sales.Sum(s => s.Amount),
-                TotalOrders = sales.Count,
-                TopStore = sales.GroupBy(s => s.StoreName)
-                                .OrderByDescending(g => g.Sum(x => x.Amount))
-                                .FirstOrDefault()?.Key ?? "N/A",
-                AvgOrderValue = sales.Any() ? sales.Average(s => s.Amount) : 0
+                totalSales = _context.Sales.Where(s => s.Date == today).Sum(s => (decimal?)s.TotalAmount) ?? 0,
+                totalProfit = _context.Sales.Where(s => s.Date == today).Sum(s => (decimal?)s.Profit) ?? 0,
+                totalQuantitySold = _context.SaleItems.Where(i => i.Sale.Date == today).Sum(i => (int?)i.Quantity) ?? 0,
+                newInventoryAdded = _context.Inventory.Where(i => i.AddedDate == today).Sum(i => (int?)i.Quantity) ?? 0
             };
 
             return Json(result);
@@ -36,23 +34,36 @@ namespace StoreAnalysis.Controllers
         [HttpGet]
         public IActionResult GetSalesChartData()
         {
-                var result = _context.Sales
-           .GroupBy(x => x.SaleDate.Date)
-           .Select(g => new
-           {
-               Date = g.Key, // Keep as DateTime for now
-               Total = g.Sum(x => x.Amount)
-           })
-           .AsEnumerable() // Switch to client-side evaluation
-           .Select(g => new
-           {
-               Date = g.Date.ToString("yyyy-MM-dd"), // Format on the client side
-               Total = g.Total
-           })
-           .OrderBy(x => x.Date)
-           .ToList();
+            var today = DateTime.Today;
+            var last7 = today.AddDays(-6);
 
-                return Json(result);
+            var rawSales = _context.Sales
+                .Where(s => s.Date >= last7 && s.Date <= today)
+                .ToList() // << force execution, so formatting below happens in-memory
+                .GroupBy(s => s.Date)
+                .Select(g => new
+                {
+                    Date = g.Key.ToString("MMM dd"), // now valid, done in memory
+                    Total = g.Sum(x => x.TotalAmount)
+                })
+                .OrderBy(g => g.Date)
+                .ToList();
+
+            var sold = _context.SaleItems
+                .Where(i => i.Sale.Date == today)
+                .Sum(i => (int?)i.Quantity) ?? 0;
+
+            var newInventory = _context.Inventory
+                .Where(i => i.AddedDate == today)
+                .Sum(i => (int?)i.Quantity) ?? 0;
+
+            return Json(new
+            {
+                salesLabels = rawSales.Select(x => x.Date).ToList(),
+                salesData = rawSales.Select(x => x.Total).ToList(),
+                totalQuantitySold = sold,
+                newInventoryAdded = newInventory
+            });
 
         }
     }

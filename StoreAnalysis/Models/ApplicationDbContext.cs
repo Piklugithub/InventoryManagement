@@ -9,9 +9,11 @@ namespace StoreAnalysis.Models
         {
         }
 
-        public DbSet<SalesData> Sales { get; set; }
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<SaleItem> SaleItems { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
     }
 }
