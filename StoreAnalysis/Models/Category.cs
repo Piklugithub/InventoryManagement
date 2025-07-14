@@ -8,5 +8,6 @@ namespace StoreAnalysis.Models
         public string Name { get; set; }
 
         public ICollection<Brand> Brands { get; set; }
+        public ICollection<Inventory> Inventories { get; set; }
     }
 }

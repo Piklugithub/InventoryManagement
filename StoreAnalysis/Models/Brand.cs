@@ -11,5 +11,6 @@ namespace StoreAnalysis.Models
 
         public int CategoryId { get; set; }
         //public Category Category { get; set; }
+        public ICollection<Inventory> Inventories { get; set; }
     }
 }
