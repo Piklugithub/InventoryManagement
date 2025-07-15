@@ -79,6 +79,18 @@ namespace StoreAnalysis.Controllers
             _context.SaveChanges();
             return Json(new { success = true });
         }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var item = _context.Inventory.Find(id);
+            if (item != null)
+            {
+                _context.Inventory.Remove(item);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
 
     }
 }
