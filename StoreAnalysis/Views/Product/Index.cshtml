@@ -65,9 +65,16 @@
 </style>
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Product List</h4>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">+ Add Product</button>
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-6">
+            <h4>Product List</h4>
+        </div>
+        <div class="col-md-4 mt-2 mt-md-0">
+            <input type="text" id="productSearch" class="form-control" placeholder="Search product..." />
+        </div>
+        <div class="col-md-2 mt-2 mt-md-0 text-md-end">
+            <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addProductModal">+ Add Product</button>
+        </div>
     </div>
 
     <table id="productTable" class="custom-table">

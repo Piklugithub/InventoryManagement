@@ -203,3 +203,10 @@ $(document).on('click', '.qty-down', function () {
         // updateQuantity(id, value - 1);
     }
 });
+$('#productSearch').on('keyup', function () {
+    const value = $(this).val().toLowerCase();
+    $("#productBody tr").filter(function () {
+        const productName = $(this).find("td:first").text().toLowerCase();
+        $(this).toggle(productName.indexOf(value) > -1);
+    });
+});

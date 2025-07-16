@@ -24,8 +24,8 @@ namespace StoreAnalysis.Controllers
             {
                 totalSales = _context.Sales.Where(s => s.Date == today).Sum(s => (decimal?)s.TotalAmount) ?? 0,
                 totalProfit = _context.Sales.Where(s => s.Date == today).Sum(s => (decimal?)s.Profit) ?? 0,
-                totalQuantitySold = _context.SaleItems.Where(i => i.Sale.Date == today).Sum(i => (int?)i.Quantity) ?? 0,
-                newInventoryAdded = _context.Inventory.Where(i => i.AddedDate == today).Sum(i => (int?)i.Quantity) ?? 0
+                totalQuantitySold = _context.SaleProduct.Where(i => i.SaleDate == today).Sum(i => (int?)i.Quantity) ?? 0,
+                newInventoryAdded = _context.StockAdditions.Where(i => i.AddedDate == today).Sum(i => (int?)i.Quantity) ?? 0
             };
 
             return Json(result);
@@ -49,11 +49,11 @@ namespace StoreAnalysis.Controllers
                 .OrderBy(g => g.Date)
                 .ToList();
 
-            var sold = _context.SaleItems
-                .Where(i => i.Sale.Date == today)
+            var sold = _context.SaleProduct
+                .Where(i => i.SaleDate == today)
                 .Sum(i => (int?)i.Quantity) ?? 0;
 
-            var newInventory = _context.Inventory
+            var newInventory = _context.StockAdditions
                 .Where(i => i.AddedDate == today)
                 .Sum(i => (int?)i.Quantity) ?? 0;
 

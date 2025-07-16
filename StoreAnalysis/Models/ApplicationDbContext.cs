@@ -15,5 +15,7 @@ namespace StoreAnalysis.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<SaleProduct> SaleProduct { get; set; }
+        public DbSet<StockAddition> StockAdditions { get; set; }
     }
 }
