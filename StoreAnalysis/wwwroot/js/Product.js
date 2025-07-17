@@ -8,8 +8,8 @@ $(document).ready(function () {
         e.preventDefault();
         const data = {
             ProductName: $('[name="ProductName"]').val(),
-            Quantity: parseInt($('[name="Quantity"]').val()),
             MRP: parseFloat($('[name="MRP"]').val()),
+            Quantity: 0, // Default quantity to 0 for new products
             CategoryId: parseInt($('[name="CategoryId"]').val()),
             BrandId: parseInt($('[name="BrandId"]').val())
         };
@@ -86,14 +86,7 @@ function loadProductTable() {
             products.forEach(p => {
                 tbody.append(`<tr>
                     <td contenteditable="true" data-id="${p.id}" data-field="ProductName">${p.productName}</td>
-                    <td contenteditable="true" data-id="${p.id}" data-field="MRP">${p.mrp}</td>
-                    <td class="d-flex align-items-center justify-content-center gap-1" style="min-width:100px;">
-                        <span class="editable-qty" contenteditable="true" data-id="${p.id}" data-field="Quantity">${p.quantity}</span>
-                        <div class="d-flex flex-column ms-1">
-                            <span class="text-primary fw-bold cursor-pointer qty-up" data-id="${p.id}" style="line-height:10px;">&#9650;</span>
-                            <span class="text-primary fw-bold cursor-pointer qty-down" data-id="${p.id}" style="line-height:10px;">&#9660;</span>
-                        </div>
-                    </td>
+                    <td contenteditable="true" data-id="${p.id}" data-field="MRP">${p.mrp}</td>                   
                     <td>${p.categoryName}</td>
                     <td>${p.brandName}</td>
                     <td>
@@ -114,8 +107,7 @@ function saveEdit(id) {
     const updated = {
         Id: id,
         ProductName: $(`[data-id="${id}"][data-field="ProductName"]`).text(),
-        MRP: parseFloat($(`[data-id="${id}"][data-field="MRP"]`).text()),
-        Quantity: parseInt($(`[data-id="${id}"][data-field="Quantity"]`).text())
+        MRP: parseFloat($(`[data-id="${id}"][data-field="MRP"]`).text()),       
     };
 
     $.ajax({
