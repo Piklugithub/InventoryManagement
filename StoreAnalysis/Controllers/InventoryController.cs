@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using StoreAnalysis.Models;
 
 namespace StoreAnalysis.Controllers
@@ -69,6 +70,10 @@ namespace StoreAnalysis.Controllers
             if (product.Quantity < model.Quantity)
                 return Json(new { success = false, message = "Not enough stock." });
 
+            decimal mrp = product.MRP.GetValueOrDefault(); // handle nullable MRP
+            decimal? totalAmount = mrp * model.Quantity;
+            decimal? profit = totalAmount * 0.10m; // ✅ 10% profit
+
             product.Quantity -= model.Quantity;
 
             // Optional: Log sale
@@ -76,8 +81,28 @@ namespace StoreAnalysis.Controllers
             {
                 ProductId = model.ProductId,
                 Quantity = model.Quantity,
-                SaleDate = DateTime.Now
+                SaleDate = DateTime.Now,
+                TotalAmount = totalAmount
             });
+
+            // 3. Update or insert DailySummary
+            var today = DateTime.Today;
+            var summary = _context.Sales.FirstOrDefault(d => d.Date == today);
+
+            if (summary != null)
+            {
+                summary.TotalAmount += totalAmount;
+                summary.Profit += profit;
+            }
+            else
+            {
+                _context.Sales.Add(new Sale
+                {
+                    Date = today,
+                    TotalAmount = totalAmount,
+                    Profit = profit
+                });
+            }
 
             _context.SaveChanges();
             return Json(new { success = true });

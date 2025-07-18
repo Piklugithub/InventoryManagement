@@ -47,32 +47,6 @@ function loadDropdowns() {
         $('[name="BrandId"]').html(data.brands.map(b => `<option value="${b.value}">${b.text}</option>`));
     });
 }
-
-//function loadProductTable() {
-//    table = $('#productTable').DataTable({
-//        ajax: '/Product/GetAllProducts',
-//        columns: [
-//            {
-//                data: 'productName',
-//                render: (data, type, row) => `<span contenteditable="true" data-id="${row.id}" data-field="ProductName">${data}</span>`
-//            },
-//            {
-//                data: 'mrp',
-//                render: (data, type, row) => `<span contenteditable="true" data-id="${row.id}" data-field="MRP">${data}</span>`
-//            },
-//            {
-//                data: 'quantity',
-//                render: (data, type, row) => `<span contenteditable="true" data-id="${row.id}" data-field="Quantity">${data}</span>`
-//            },
-//            { data: 'categoryName' },
-//            { data: 'brandName' },
-//            {
-//                data: null,
-//                render: row => `<button class="btn btn-sm btn-primary" onclick="saveEdit(${row.id})">Save</button>`
-//            }
-//        ]
-//    });
-//}
 function loadProductTable() {
     $.ajax({
         url: '/Product/GetAllProducts',
