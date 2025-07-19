@@ -9,9 +9,10 @@ $(document).ready(function () {
         const data = {
             ProductName: $('[name="ProductName"]').val(),
             MRP: parseFloat($('[name="MRP"]').val()),
-            Quantity: 0, // Default quantity to 0 for new products
+            Quantity: parseInt($('[name="Quantity"]').val()),  // Default quantity to 0 for new products
             CategoryId: parseInt($('[name="CategoryId"]').val()),
-            BrandId: parseInt($('[name="BrandId"]').val())
+            BrandId: parseInt($('[name="BrandId"]').val()),
+            SupplierId: parseInt($('[name="SupplierId"]').val()),
         };
 
         $.ajax({
@@ -45,6 +46,7 @@ function loadDropdowns() {
     $.get('/Product/GetDropdownData', function (data) {
         $('[name="CategoryId"]').html(data.categories.map(c => `<option value="${c.value}">${c.text}</option>`));
         $('[name="BrandId"]').html(data.brands.map(b => `<option value="${b.value}">${b.text}</option>`));
+        $('[name="SupplierId"]').html(data.supplier.map(b => `<option value="${b.value}">${b.text}</option>`));
     });
 }
 function loadProductTable() {
@@ -63,6 +65,7 @@ function loadProductTable() {
                     <td contenteditable="true" data-id="${p.id}" data-field="MRP">${p.mrp}</td>                   
                     <td>${p.categoryName}</td>
                     <td>${p.brandName}</td>
+                    <td>${p.supplierName}</td>
                     <td>
                         <button class="btn btn-sm btn-primary" onclick="saveEdit(${p.id})">Save</button>
                         <button class="btn btn-sm btn-danger delete-btn" data-id="${p.id}" data-name="${p.productName}">Delete</button>

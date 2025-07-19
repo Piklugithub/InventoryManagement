@@ -21,11 +21,11 @@ namespace StoreAnalysis.Controllers
         [HttpPost]
         public IActionResult LoginUser([FromBody] Users model)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             //return Json(user != null
             //    ? new { success = true, message = "Login successful", userName = user.FullName } : new { success = false, message = "Invalid credentials" });
 
-            if (user != null)
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
             {
                 string base64Image = user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : null;
 
@@ -75,12 +75,13 @@ namespace StoreAnalysis.Controllers
                     imageBytes = ms.ToArray();
                 }
             }
-
+            // Hash password using BCrypt
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
             var user = new Users
             {
                 FullName = model.FullName,
                 Email = model.Email,
-                Password = model.Password,
+                Password = hashedPassword,
                 ProfilePicture = imageBytes
             };
 

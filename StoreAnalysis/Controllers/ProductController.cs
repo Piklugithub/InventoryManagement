@@ -31,8 +31,13 @@ namespace StoreAnalysis.Controllers
                 Value = b.Id.ToString(),
                 Text = b.Name
             }).ToList();
+            var supplier = _context.Suppliers.Where(b => b.IsActive).Select(b => new SelectListItem
+            {
+                Value = b.SupplierId.ToString(),
+                Text = b.SupplierName
+            }).ToList();
 
-            return Json(new { categories, brands });
+            return Json(new { categories, brands, supplier });
         }
         [HttpGet]
         public IActionResult GetAllProducts()
@@ -40,6 +45,7 @@ namespace StoreAnalysis.Controllers
             var products = _context.Inventory
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Include(p => p.Supplier)
                 .Select(p => new
                 {
                     p.Id,
@@ -47,7 +53,8 @@ namespace StoreAnalysis.Controllers
                     p.Quantity,
                     p.MRP,
                     categoryName = p.Category != null ? p.Category.Name : "",
-                    brandName = p.Brand != null ? p.Brand.Name : ""
+                    brandName = p.Brand != null ? p.Brand.Name : "",
+                    supplierName = p.Supplier != null ? p.Supplier.SupplierName : ""
                 }).ToList();
 
             return Json(products);

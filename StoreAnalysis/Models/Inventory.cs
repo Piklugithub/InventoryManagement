@@ -8,6 +8,8 @@
         public DateTime? AddedDate { get; set; }
         public decimal? MRP { get; set; }
         public int? CategoryId { get; set; }
+        public int? SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
         public Category Category { get; set; }
 
         public int? BrandId { get; set; }

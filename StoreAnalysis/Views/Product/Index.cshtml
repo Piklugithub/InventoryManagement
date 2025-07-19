@@ -84,6 +84,7 @@
                     <th>MRP</th>                    
                     <th>Category</th>
                     <th>Brand</th>
+                    <th>Supplier</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -117,6 +118,14 @@
                     <div class="col-6">
                         <label>Brand</label>
                         <select name="BrandId" class="form-select" required></select>
+                    </div>
+                    <div class="col-6">
+                        <label>Quantity</label>
+                        <input type="number" name="Quantity" class="form-control" step="1" required />
+                    </div>
+                    <div class="col-6">
+                        <label>Supplier</label>
+                        <select name="SupplierId" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer">
