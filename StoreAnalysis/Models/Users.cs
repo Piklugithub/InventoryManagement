@@ -20,5 +20,7 @@ namespace StoreAnalysis.Models
         [StringLength(100)]
         public string Password { get; set; }
         public byte[]? ProfilePicture { get; set; }
+        public string? OTP { get; set; }
+        public DateTime? OTPGeneratedAt { get; set; }
     }
 }

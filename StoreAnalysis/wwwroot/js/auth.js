@@ -38,20 +38,45 @@
             dataType: 'json',
             data: JSON.stringify(user),
             success: function (data) {
-                if (data.success) {
-                    $('#loginMsg').text(data.message).css("color", "green");
-                    sessionStorage.setItem("UserName", data.userName);
-                    sessionStorage.setItem("UserImage", data.profileImage);
-                    setTimeout(() => window.location = "/Dashboard/Index", 1500);
-                }
-                else {
-                    $('#loginMsg').text(data.message).css("color", "red");
+                //if (data.success) {
+                //    $('#loginMsg').text(data.message).css("color", "green");
+                //    sessionStorage.setItem("UserName", data.userName);
+                //    sessionStorage.setItem("UserImage", data.profileImage);
+                //    setTimeout(() => window.location = "/Dashboard/Index", 1500);
+                //}
+                //else {
+                //    $('#loginMsg').text(data.message).css("color", "red");
 
+                //}
+                if (data.status === 'otp') {
+                    var myModal = new bootstrap.Modal(document.getElementById('otpModal'));
+                    myModal.show();
+                } else {
+                    $('#loginMsg').text(data.message).css("color", "red");
                 }
             },
             error: function (xhr, status, err) {
                 console.log("AJAX Error:", status, err);
                 $('#loginMsg').text("Server error. Please try again.").css("color", "red");
+            }
+        });
+    });
+    $('#verifyOtpBtn').click(function () {
+        let otp = $('#otpInput').val();
+        let email = $('#loginEmail').val();
+        $.ajax({
+            url: '/User/VerifyOtp',
+            type: 'POST',
+            data: { otp: otp, email: email },
+            success: function (res) {
+                if (res.success) {
+                    $('#loginMsg').text(res.message).css("color", "green");
+                    sessionStorage.setItem("UserName", res.userName);
+                    sessionStorage.setItem("UserImage", res.profileImage);
+                     setTimeout(() => window.location = "/Dashboard/Index", 1500);
+                } else {
+                    $('#otpError').text(res.message).show();
+                }
             }
         });
     });
